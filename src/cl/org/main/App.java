@@ -5,17 +5,51 @@
  */
 package cl.org.main;
 
+import cl.org.model.Mascota;
+import cl.org.thread.WriteThread;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  *
  * @author Jorge A
  */
 public class App extends javax.swing.JFrame {
 
-    /**
-     * Creates new form App
-     */
+    private Mascota pou;
+
     public App() {
         initComponents();
+        initPou();
+        System.out.println(pou);
+    }
+
+    private void initPou() {
+        File tmp = new File("mascota.properties");
+        boolean existe = tmp.exists();
+
+        try {
+            if (existe) {
+                Properties prop = new Properties();
+                InputStream input = new FileInputStream(tmp);
+
+                int entretencion = Integer.parseInt(prop.getProperty("entretencion"));
+                int limpieza = Integer.parseInt(prop.getProperty("limpieza"));
+                int salud = Integer.parseInt(prop.getProperty("salud"));
+
+                this.pou = new Mascota(entretencion, limpieza, salud);
+            } else {
+                this.pou = new Mascota(100, 100, 100);
+                WriteThread write = new WriteThread(String.valueOf(pou.getEntretencion()), 
+                                                    String.valueOf(pou.getLimpieza()), 
+                                                    String.valueOf(pou.getSalud()));
+                write.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

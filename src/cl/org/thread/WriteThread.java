@@ -5,10 +5,42 @@
  */
 package cl.org.thread;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Properties;
+
 /**
  *
  * @author Jorge A
  */
-public class ThreadA {
-    
+public class WriteThread extends Thread {
+
+    private Properties prop;
+    private OutputStream output;
+    private File archivo;
+    private String entretencion;
+    private String limpieza;
+    private String salud;
+
+    public WriteThread(String entretencion, String limpieza, String salud) {
+        this.prop = new Properties();
+        this.archivo = new File("mascota.properties");
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.output = new FileOutputStream(archivo);
+            this.prop.setProperty("entretencion", entretencion);
+            this.prop.setProperty("limpieza", limpieza);
+            this.prop.setProperty("salud", salud);
+
+            this.prop.store(output, null);
+            
+            this.output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
