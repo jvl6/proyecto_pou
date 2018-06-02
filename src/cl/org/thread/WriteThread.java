@@ -19,11 +19,11 @@ public class WriteThread extends Thread {
     private Properties prop;
     private OutputStream output;
     private File archivo;
-    private String entretencion;
-    private String limpieza;
-    private String salud;
+    private int entretencion;
+    private int limpieza;
+    private int salud;
 
-    public WriteThread(String entretencion, String limpieza, String salud) {
+    public WriteThread(int entretencion, int limpieza, int salud) {
         this.prop = new Properties();
         this.archivo = new File("mascota.properties");
     }
@@ -32,12 +32,12 @@ public class WriteThread extends Thread {
     public void run() {
         try {
             this.output = new FileOutputStream(archivo);
-            this.prop.setProperty("entretencion", entretencion);
-            this.prop.setProperty("limpieza", limpieza);
-            this.prop.setProperty("salud", salud);
+            this.prop.setProperty("entretencion", Integer.toString(entretencion));
+            this.prop.setProperty("limpieza", Integer.toString(limpieza));
+            this.prop.setProperty("salud", Integer.toString(salud));
 
             this.prop.store(output, null);
-            
+
             this.output.close();
         } catch (Exception e) {
             e.printStackTrace();

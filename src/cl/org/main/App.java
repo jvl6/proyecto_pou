@@ -41,10 +41,8 @@ public class App extends javax.swing.JFrame {
 
                 this.pou = new Mascota(entretencion, limpieza, salud);
             } else {
-                this.pou = new Mascota(100, 100, 100);
-                WriteThread write = new WriteThread(String.valueOf(pou.getEntretencion()), 
-                                                    String.valueOf(pou.getLimpieza()), 
-                                                    String.valueOf(pou.getSalud()));
+                this.pou = new Mascota(100,100, 100);
+                WriteThread write = new WriteThread(pou.getEntretencion(),pou.getLimpieza(),pou.getSalud());
                 write.start();
             }
         } catch (Exception e) {
