@@ -34,6 +34,7 @@ public class App extends javax.swing.JFrame {
             if (existe) {
                 Properties prop = new Properties();
                 InputStream input = new FileInputStream(tmp);
+                prop.load(input);
 
                 int entretencion = Integer.parseInt(prop.getProperty("entretencion"));
                 int limpieza = Integer.parseInt(prop.getProperty("limpieza"));
