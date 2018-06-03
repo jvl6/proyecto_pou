@@ -38,11 +38,13 @@ public class App extends javax.swing.JFrame {
                 int entretencion = Integer.parseInt(prop.getProperty("entretencion"));
                 int limpieza = Integer.parseInt(prop.getProperty("limpieza"));
                 int salud = Integer.parseInt(prop.getProperty("salud"));
+                int hambre = Integer.parseInt(prop.getProperty("hambre"));
+                int energia = Integer.parseInt(prop.getProperty("energia"));
 
-                this.pou = new Mascota(entretencion, limpieza, salud);
+                this.pou = new Mascota(entretencion, limpieza, salud, hambre, energia);
             } else {
-                this.pou = new Mascota(100,100, 100);
-                WriteThread write = new WriteThread(pou.getEntretencion(),pou.getLimpieza(),pou.getSalud());
+                this.pou = new Mascota(100, 100, 100, 100, 100);
+                WriteThread write = new WriteThread(pou.getEntretencion(), pou.getLimpieza(), pou.getSalud(), pou.getHambre(), pou.getEnergia());
                 write.start();
             }
         } catch (Exception e) {

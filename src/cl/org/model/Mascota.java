@@ -13,15 +13,18 @@ public class Mascota {
     private int entretencion;
     private int limpieza;
     private int salud;
-    
+    private int hambre;
+    private int energia;
+
     public Mascota() {
-        
     }
 
-    public Mascota(int entretencion, int limpieza, int salud) {
+    public Mascota(int entretencion, int limpieza, int salud, int hambre, int energia) {
         this.entretencion = entretencion;
         this.limpieza = limpieza;
         this.salud = salud;
+        this.hambre = hambre;
+        this.energia = energia;
     }
 
     public int getEntretencion() {
@@ -48,8 +51,24 @@ public class Mascota {
         this.salud = salud;
     }
 
+    public int getHambre() {
+        return hambre;
+    }
+
+    public void setHambre(int hambre) {
+        this.hambre = hambre;
+    }
+
+    public int getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia(int energia) {
+        this.energia = energia;
+    }
+
     @Override
     public String toString() {
-        return "Mascota{" + "entretencion=" + entretencion + ", limpieza=" + limpieza + ", salud=" + salud + '}';
+        return "Mascota{" + "entretencion=" + entretencion + ", limpieza=" + limpieza + ", salud=" + salud + ", hambre=" + hambre + ", energia=" + energia + '}';
     }
 }

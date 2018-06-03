@@ -22,8 +22,15 @@ public class WriteThread extends Thread {
     private int entretencion;
     private int limpieza;
     private int salud;
+    private int hambre;
+    private int energia;
 
-    public WriteThread(int entretencion, int limpieza, int salud) {
+    public WriteThread(int entretencion, int limpieza, int salud, int hambre, int energia) {
+        this.entretencion = entretencion;
+        this.limpieza = limpieza;
+        this.salud = salud;
+        this.hambre = hambre;
+        this.energia = energia;
         this.prop = new Properties();
         this.archivo = new File("mascota.properties");
     }
@@ -35,6 +42,8 @@ public class WriteThread extends Thread {
             this.prop.setProperty("entretencion", Integer.toString(entretencion));
             this.prop.setProperty("limpieza", Integer.toString(limpieza));
             this.prop.setProperty("salud", Integer.toString(salud));
+            this.prop.setProperty("hambre", Integer.toString(hambre));
+            this.prop.setProperty("energia", Integer.toString(energia));
 
             this.prop.store(output, null);
 
