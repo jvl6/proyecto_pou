@@ -26,7 +26,7 @@ public class SaludThread extends Thread {
 
     public SaludThread(String timeProp, Mascota mascota) throws ParseException {
         this.mascota = mascota;
-        this.df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS");
+        this.df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         this.timeProp = df.parse(timeProp);
     }
 

@@ -8,9 +8,8 @@ package cl.org.thread;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -27,8 +26,8 @@ public class WriteThread extends Thread {
     private int salud;
     private int hambre;
     private int energia;
-    private LocalDateTime local;
-    private DateTimeFormatter dtf;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private String fecha;
 
     public WriteThread(int entretencion, int limpieza, int salud, int hambre, int energia) {
         this.entretencion = entretencion;
@@ -38,8 +37,7 @@ public class WriteThread extends Thread {
         this.energia = energia;
         this.prop = new Properties();
         this.archivo = new File("mascota.properties");
-        this.local = LocalDateTime.now();
-        this.dtf = DateTimeFormatter.ofPattern("HH:mm");
+        this.fecha = sdf.format(new Date());
     }
 
     @Override
@@ -47,15 +45,15 @@ public class WriteThread extends Thread {
         try {
             this.output = new FileOutputStream(archivo);
             this.prop.setProperty("entretencion", Integer.toString(entretencion));
-            this.prop.setProperty("horaEntretencion", local.toString());
+            this.prop.setProperty("horaEntretencion", fecha);
             this.prop.setProperty("limpieza", Integer.toString(limpieza));
-            this.prop.setProperty("horaLimpieza", local.toString());
+            this.prop.setProperty("horaLimpieza", fecha);
             this.prop.setProperty("salud", Integer.toString(salud));
-            this.prop.setProperty("horaSalud", local.toString());
+            this.prop.setProperty("horaSalud", fecha);
             this.prop.setProperty("hambre", Integer.toString(hambre));
-            this.prop.setProperty("horaHambre", local.toString());
+            this.prop.setProperty("horaHambre", fecha);
             this.prop.setProperty("energia", Integer.toString(energia));
-            this.prop.setProperty("horaEnergia", local.toString());
+            this.prop.setProperty("horaEnergia", fecha);
             this.prop.store(output, null);
 
             this.output.close();

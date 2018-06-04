@@ -7,9 +7,11 @@ package cl.org.main;
 
 import cl.org.model.Mascota;
 import cl.org.thread.WriteThread;
+import cl.org.thread.SaludThread;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -42,6 +44,7 @@ public class App extends javax.swing.JFrame {
                 int salud = Integer.parseInt(prop.getProperty("salud"));
                 int hambre = Integer.parseInt(prop.getProperty("hambre"));
                 int energia = Integer.parseInt(prop.getProperty("energia"));
+                String fecha = prop.getProperty("horaSalud");
 
                 this.pou = new Mascota(entretencion, limpieza, salud, hambre, energia);
 
@@ -50,16 +53,19 @@ public class App extends javax.swing.JFrame {
                 pbHambre.setValue(hambre);
                 pbLimpieza.setValue(limpieza);
                 pbSalud.setValue(salud);
+                
+                SaludThread st = new SaludThread(fecha,pou);
+                st.start();
 
             } else {
                 // Primer Run
-                this.pou = new Mascota(50, 50, 50, 50, 50);
+                this.pou = new Mascota(80, 80, 50, 20, 80);
                 WriteThread write = new WriteThread(pou.getEntretencion(), pou.getLimpieza(), pou.getSalud(), pou.getHambre(), pou.getEnergia());
                 write.start();
-                pbEnergia.setValue(50);
-                pbEntretencion.setValue(50);
-                pbHambre.setValue(50);
-                pbLimpieza.setValue(50);
+                pbEnergia.setValue(80);
+                pbEntretencion.setValue(80);
+                pbHambre.setValue(20);
+                pbLimpieza.setValue(80);
                 pbSalud.setValue(50);
             }
         } catch (Exception e) {
