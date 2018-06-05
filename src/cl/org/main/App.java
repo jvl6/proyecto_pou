@@ -6,12 +6,12 @@
 package cl.org.main;
 
 import cl.org.model.Mascota;
+import cl.org.thread.AlimentarThread;
 import cl.org.thread.WriteThread;
 import cl.org.thread.SaludThread;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -31,12 +31,13 @@ public class App extends javax.swing.JFrame {
     private void initPou() {
         File tmp = new File("mascota.properties");
         boolean existe = tmp.exists();
+        Properties prop = new Properties();
+        InputStream input;
 
         try {
             if (existe) {
                 // Cuando hay un save
-                Properties prop = new Properties();
-                InputStream input = new FileInputStream(tmp);
+                input = new FileInputStream(tmp);
                 prop.load(input);
 
                 int entretencion = Integer.parseInt(prop.getProperty("entretencion"));
@@ -53,9 +54,11 @@ public class App extends javax.swing.JFrame {
                 pbHambre.setValue(hambre);
                 pbLimpieza.setValue(limpieza);
                 pbSalud.setValue(salud);
-                
-                SaludThread st = new SaludThread(fecha,pou);
+
+                SaludThread st = new SaludThread(fecha, pou, pbSalud);
                 st.start();
+                AlimentarThread at = new AlimentarThread(fecha, pou, pbHambre);
+                at.start();
 
             } else {
                 // Primer Run
@@ -67,6 +70,14 @@ public class App extends javax.swing.JFrame {
                 pbHambre.setValue(20);
                 pbLimpieza.setValue(80);
                 pbSalud.setValue(50);
+
+                tmp = new File("mascota.properties");
+                input = new FileInputStream(tmp);
+                prop.load(input);
+                String fecha = prop.getProperty("horaSalud");
+                
+                SaludThread st = new SaludThread(fecha, pou, pbSalud);
+                st.start();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,6 +113,11 @@ public class App extends javax.swing.JFrame {
         ImgPou.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cl/org/res/Pou.png"))); // NOI18N
 
         btnAlimentar.setText("Alimentar");
+        btnAlimentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlimentarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setText("Limpiar");
 
@@ -195,6 +211,11 @@ public class App extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAlimentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlimentarActionPerformed
+        this.pou.setHambre(this.pou.getHambre() + 20);
+        this.pbHambre.setValue(this.pou.getHambre());
+    }//GEN-LAST:event_btnAlimentarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -28,7 +28,7 @@ public class WriteThread extends Thread {
     private int energia;
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     private String fecha;
-
+    
     public WriteThread(int entretencion, int limpieza, int salud, int hambre, int energia) {
         this.entretencion = entretencion;
         this.limpieza = limpieza;
