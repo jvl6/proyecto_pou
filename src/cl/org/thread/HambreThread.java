@@ -16,7 +16,7 @@ import javax.swing.JProgressBar;
  *
  * @author zdk
  */
-public class AlimentarThread extends Thread {
+public class HambreThread extends Thread {
 
     private Date timeProp;
     private Date localDate;
@@ -26,7 +26,7 @@ public class AlimentarThread extends Thread {
     private long localMS;
     private long propMS;
 
-    public AlimentarThread(String timeProp, Mascota mascota, JProgressBar pb) throws ParseException {
+    public HambreThread(String timeProp, Mascota mascota, JProgressBar pb) throws ParseException {
         this.df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         this.mascota = mascota;
         this.timeProp = df.parse(timeProp);
@@ -47,7 +47,7 @@ public class AlimentarThread extends Thread {
 
                 System.out.println(dif);
 
-                if (this.localMS - this.propMS < TimeUnit.MINUTES.toMillis(20)) {
+                if (this.localMS - this.propMS >= TimeUnit.MINUTES.toMillis(20)) {
                     this.mascota.setHambre(this.mascota.getHambre()- 1);
                     this.pb.setValue(this.pb.getValue() - 1);
                 }

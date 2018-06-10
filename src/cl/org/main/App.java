@@ -6,7 +6,10 @@
 package cl.org.main;
 
 import cl.org.model.Mascota;
-import cl.org.thread.AlimentarThread;
+import cl.org.thread.EnergiaThread;
+import cl.org.thread.EntretencionThread;
+import cl.org.thread.HambreThread;
+import cl.org.thread.LimpiezaThread;
 import cl.org.thread.WriteThread;
 import cl.org.thread.SaludThread;
 import java.io.File;
@@ -50,15 +53,26 @@ public class App extends javax.swing.JFrame {
                 this.pou = new Mascota(entretencion, limpieza, salud, hambre, energia);
 
                 pbEnergia.setValue(energia);
+                lblPorcEnergia.setText(energia + "%");
                 pbEntretencion.setValue(entretencion);
+                lblPorcEntrete.setText(entretencion + "%");
                 pbHambre.setValue(hambre);
+                lblPorcHambre.setText(hambre + "%");
                 pbLimpieza.setValue(limpieza);
+                lblPorcLimpieza.setText(limpieza + "%");
                 pbSalud.setValue(salud);
+                lblPorcSalud.setText(salud + "%");
 
                 SaludThread st = new SaludThread(fecha, pou, pbSalud);
                 st.start();
-                AlimentarThread at = new AlimentarThread(fecha, pou, pbHambre);
+                HambreThread at = new HambreThread(fecha, pou, pbHambre);
                 at.start();
+                EntretencionThread ett = new EntretencionThread(fecha, pou, pbEntretencion);
+                ett.start();
+                EnergiaThread egt = new EnergiaThread(fecha, pou, pbEnergia);
+                egt.start();
+                LimpiezaThread lmt = new LimpiezaThread(fecha, pou, pbLimpieza);
+                lmt.start();
 
             } else {
                 // Primer Run
@@ -71,13 +85,27 @@ public class App extends javax.swing.JFrame {
                 pbLimpieza.setValue(80);
                 pbSalud.setValue(50);
 
+                lblPorcEnergia.setText(80 + "%");
+                lblPorcEntrete.setText(80 + "%");
+                lblPorcHambre.setText(20 + "%");
+                lblPorcLimpieza.setText(80 + "%");
+                lblPorcSalud.setText(50 + "%");
+
                 tmp = new File("mascota.properties");
                 input = new FileInputStream(tmp);
                 prop.load(input);
                 String fecha = prop.getProperty("horaSalud");
-                
+
                 SaludThread st = new SaludThread(fecha, pou, pbSalud);
                 st.start();
+                HambreThread at = new HambreThread(fecha, pou, pbHambre);
+                at.start();
+                EntretencionThread ett = new EntretencionThread(fecha, pou, pbEntretencion);
+                ett.start();
+                EnergiaThread egt = new EnergiaThread(fecha, pou, pbEnergia);
+                egt.start();
+                LimpiezaThread lmt = new LimpiezaThread(fecha, pou, pbLimpieza);
+                lmt.start();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,6 +135,11 @@ public class App extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        lblPorcSalud = new javax.swing.JLabel();
+        lblPorcLimpieza = new javax.swing.JLabel();
+        lblPorcEntrete = new javax.swing.JLabel();
+        lblPorcHambre = new javax.swing.JLabel();
+        lblPorcEnergia = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,6 +166,16 @@ public class App extends javax.swing.JFrame {
 
         jLabel5.setText("Energía:");
 
+        lblPorcSalud.setText("...");
+
+        lblPorcLimpieza.setText("...");
+
+        lblPorcEntrete.setText("...");
+
+        lblPorcHambre.setText("...");
+
+        lblPorcEnergia.setText("...");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,28 +196,41 @@ public class App extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pbSalud, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
-                            .addComponent(pbLimpieza, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pbEntretencion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(pbSalud, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblPorcSalud)
+                                .addGap(31, 31, 31))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(pbLimpieza, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pbEntretencion, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPorcEntrete)
+                                    .addComponent(lblPorcLimpieza))
+                                .addGap(31, 31, 31))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addComponent(ImgPou)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(pbHambre, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(pbEnergia, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(155, 155, 155)
+                                .addComponent(ImgPou))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(45, 45, 45)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pbEnergia, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblPorcEnergia))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pbHambre, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblPorcHambre)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,23 +238,28 @@ public class App extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pbSalud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(lblPorcSalud))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pbLimpieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(lblPorcLimpieza))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pbEntretencion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(lblPorcEntrete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pbHambre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(lblPorcHambre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pbEnergia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(lblPorcEnergia))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addComponent(ImgPou)
                 .addGap(78, 78, 78)
@@ -262,6 +323,11 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel lblPorcEnergia;
+    private javax.swing.JLabel lblPorcEntrete;
+    private javax.swing.JLabel lblPorcHambre;
+    private javax.swing.JLabel lblPorcLimpieza;
+    private javax.swing.JLabel lblPorcSalud;
     private javax.swing.JProgressBar pbEnergia;
     private javax.swing.JProgressBar pbEntretencion;
     private javax.swing.JProgressBar pbHambre;

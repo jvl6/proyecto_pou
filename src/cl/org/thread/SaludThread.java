@@ -47,7 +47,7 @@ public class SaludThread extends Thread {
                 
                 System.out.println(dif);
                 
-                if (this.localMS - this.propMS < TimeUnit.MINUTES.toMillis(20)) {
+                if (this.localMS - this.propMS >= TimeUnit.MINUTES.toMillis(20)) {
                     this.mascota.setSalud(this.mascota.getSalud() - 1);
                     this.pb.setValue(this.pb.getValue() - 1);
                 }
