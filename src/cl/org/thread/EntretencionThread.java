@@ -31,7 +31,7 @@ public class EntretencionThread extends Thread {
     public void run() {
         try {
             while (true) {
-                Thread.sleep(1000);
+                Thread.sleep(1);
 
                 localMS = System.currentTimeMillis();
                 propMS = timeProp.getTime();

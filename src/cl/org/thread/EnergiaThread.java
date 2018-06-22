@@ -31,7 +31,7 @@ public class EnergiaThread extends Thread {
     public void run() {
         try {
             while (true) {
-                Thread.sleep(1000);
+                Thread.sleep(5);
 
                 localMS = System.currentTimeMillis();
                 propMS = timeProp.getTime();

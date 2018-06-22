@@ -58,7 +58,6 @@ public class WriteThread extends Thread {
 
             this.output.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

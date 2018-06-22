@@ -37,7 +37,7 @@ public class SaludThread extends Thread {
     public void run() {
         try {
             while (true) {
-                Thread.sleep(1000);
+                Thread.sleep(5);
 
                 //lms = Local milliseconds.
                 // tms = timeProp milliseconds.

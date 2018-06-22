@@ -10,11 +10,14 @@ import cl.org.thread.EnergiaThread;
 import cl.org.thread.EntretencionThread;
 import cl.org.thread.HambreThread;
 import cl.org.thread.LimpiezaThread;
-import cl.org.thread.WriteThread;
 import cl.org.thread.SaludThread;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -24,6 +27,7 @@ import java.util.Properties;
 public class App extends javax.swing.JFrame {
 
     private Mascota pou;
+    private Properties prop;
 
     public App() {
         initComponents();
@@ -32,15 +36,15 @@ public class App extends javax.swing.JFrame {
     }
 
     private void initPou() {
-        File tmp = new File("mascota.properties");
-        boolean existe = tmp.exists();
-        Properties prop = new Properties();
+        File save = new File("mascota.properties");
+        boolean existe = save.exists();
+        this.prop = new Properties();
         InputStream input;
 
         try {
             if (existe) {
                 // Cuando hay un save
-                input = new FileInputStream(tmp);
+                input = new FileInputStream(save);
                 prop.load(input);
 
                 int entretencion = Integer.parseInt(prop.getProperty("entretencion"));
@@ -77,8 +81,23 @@ public class App extends javax.swing.JFrame {
             } else {
                 // Primer Run
                 this.pou = new Mascota(80, 80, 50, 20, 80);
-                WriteThread write = new WriteThread(pou.getEntretencion(), pou.getLimpieza(), pou.getSalud(), pou.getHambre(), pou.getEnergia());
-                write.start();
+
+                OutputStream output = new FileOutputStream(save);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                String fecha = sdf.format(new Date());
+                prop.setProperty("entretencion", Integer.toString(this.pou.getEntretencion()));
+                prop.setProperty("horaEntretencion", fecha);
+                prop.setProperty("limpieza", Integer.toString(this.pou.getLimpieza()));
+                prop.setProperty("horaLimpieza", fecha);
+                prop.setProperty("salud", Integer.toString(this.pou.getSalud()));
+                prop.setProperty("horaSalud", fecha);
+                prop.setProperty("hambre", Integer.toString(this.pou.getHambre()));
+                prop.setProperty("horaHambre", fecha);
+                prop.setProperty("energia", Integer.toString(this.pou.getEnergia()));
+                prop.setProperty("horaEnergia", fecha);
+                prop.store(output, null);
+                output.close();
+
                 pbEnergia.setValue(80);
                 pbEntretencion.setValue(80);
                 pbHambre.setValue(20);
@@ -91,24 +110,23 @@ public class App extends javax.swing.JFrame {
                 lblPorcLimpieza.setText(80 + "%");
                 lblPorcSalud.setText(50 + "%");
 
-                tmp = new File("mascota.properties");
-                input = new FileInputStream(tmp);
+                save = new File("mascota.properties");
+                input = new FileInputStream(save);
                 prop.load(input);
-                String fecha = prop.getProperty("horaSalud");
+                String fechaProp = prop.getProperty("horaSalud");
 
-                SaludThread st = new SaludThread(fecha, pou, pbSalud);
+                SaludThread st = new SaludThread(fechaProp, pou, pbSalud);
                 st.start();
-                HambreThread at = new HambreThread(fecha, pou, pbHambre);
+                HambreThread at = new HambreThread(fechaProp, pou, pbHambre);
                 at.start();
-                EntretencionThread ett = new EntretencionThread(fecha, pou, pbEntretencion);
+                EntretencionThread ett = new EntretencionThread(fechaProp, pou, pbEntretencion);
                 ett.start();
-                EnergiaThread egt = new EnergiaThread(fecha, pou, pbEnergia);
+                EnergiaThread egt = new EnergiaThread(fechaProp, pou, pbEnergia);
                 egt.start();
-                LimpiezaThread lmt = new LimpiezaThread(fecha, pou, pbLimpieza);
+                LimpiezaThread lmt = new LimpiezaThread(fechaProp, pou, pbLimpieza);
                 lmt.start();
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
