@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 /**
@@ -17,14 +18,16 @@ public class EntretencionThread extends Thread {
     private SimpleDateFormat df;
     private Mascota mascota;
     private JProgressBar pb;
+    private JLabel lb;
     private long localMS;
     private long propMS;
 
-    public EntretencionThread(String timeProp, Mascota mascota, JProgressBar pb) throws ParseException {
+    public EntretencionThread(String timeProp, Mascota mascota, JProgressBar pb, JLabel lb) throws ParseException {
         this.df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         this.mascota = mascota;
         this.timeProp = df.parse(timeProp);
         this.pb = pb;
+        this.lb = lb;
     }
 
     @Override
@@ -40,6 +43,7 @@ public class EntretencionThread extends Thread {
                 if (localMS - propMS >= TimeUnit.MINUTES.toMillis(60)) {
                     mascota.setEntretencion(mascota.getEntretencion() - 1);
                     pb.setValue(pb.getValue() - 1);
+                    lb.setText(pb.getValue() + "%");
                 }
             }
         } catch (Exception e) {

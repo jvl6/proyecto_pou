@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cl.org.main;
 
 import cl.org.model.Mascota;
@@ -19,6 +14,9 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 /**
  *
@@ -57,25 +55,26 @@ public class App extends javax.swing.JFrame {
                 this.pou = new Mascota(entretencion, limpieza, salud, hambre, energia);
 
                 pbEnergia.setValue(energia);
-                lblPorcEnergia.setText(energia + "%");
                 pbEntretencion.setValue(entretencion);
-                lblPorcEntrete.setText(entretencion + "%");
                 pbHambre.setValue(hambre);
-                lblPorcHambre.setText(hambre + "%");
                 pbLimpieza.setValue(limpieza);
-                lblPorcLimpieza.setText(limpieza + "%");
                 pbSalud.setValue(salud);
-                lblPorcSalud.setText(salud + "%");
 
-                SaludThread st = new SaludThread(fecha, pou, pbSalud);
+                lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+                lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+                lblPorcHambre.setText(pbHambre.getValue() + "%");
+                lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+                lblPorcSalud.setText(pbSalud.getValue() + "%");
+
+                SaludThread st = new SaludThread(fecha, pou, pbSalud, lblPorcSalud);
                 st.start();
-                HambreThread at = new HambreThread(fecha, pou, pbHambre);
+                HambreThread at = new HambreThread(fecha, pou, pbHambre, lblPorcHambre);
                 at.start();
-                EntretencionThread ett = new EntretencionThread(fecha, pou, pbEntretencion);
+                EntretencionThread ett = new EntretencionThread(fecha, pou, pbEntretencion, lblPorcEntrete);
                 ett.start();
-                EnergiaThread egt = new EnergiaThread(fecha, pou, pbEnergia);
+                EnergiaThread egt = new EnergiaThread(fecha, pou, pbEnergia, lblPorcEnergia);
                 egt.start();
-                LimpiezaThread lmt = new LimpiezaThread(fecha, pou, pbLimpieza);
+                LimpiezaThread lmt = new LimpiezaThread(fecha, pou, pbLimpieza, lblPorcLimpieza);
                 lmt.start();
 
             } else {
@@ -104,26 +103,26 @@ public class App extends javax.swing.JFrame {
                 pbLimpieza.setValue(80);
                 pbSalud.setValue(50);
 
-                lblPorcEnergia.setText(80 + "%");
-                lblPorcEntrete.setText(80 + "%");
-                lblPorcHambre.setText(20 + "%");
-                lblPorcLimpieza.setText(80 + "%");
-                lblPorcSalud.setText(50 + "%");
+                lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+                lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+                lblPorcHambre.setText(pbHambre.getValue() + "%");
+                lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+                lblPorcSalud.setText(pbSalud.getValue() + "%");
 
                 save = new File("mascota.properties");
                 input = new FileInputStream(save);
                 prop.load(input);
                 String fechaProp = prop.getProperty("horaSalud");
 
-                SaludThread st = new SaludThread(fechaProp, pou, pbSalud);
+                SaludThread st = new SaludThread(fechaProp, pou, pbSalud, lblPorcSalud);
                 st.start();
-                HambreThread at = new HambreThread(fechaProp, pou, pbHambre);
+                HambreThread at = new HambreThread(fechaProp, pou, pbHambre, lblPorcHambre);
                 at.start();
-                EntretencionThread ett = new EntretencionThread(fechaProp, pou, pbEntretencion);
+                EntretencionThread ett = new EntretencionThread(fechaProp, pou, pbEntretencion, lblPorcEntrete);
                 ett.start();
-                EnergiaThread egt = new EnergiaThread(fechaProp, pou, pbEnergia);
+                EnergiaThread egt = new EnergiaThread(fechaProp, pou, pbEnergia, lblPorcEnergia);
                 egt.start();
-                LimpiezaThread lmt = new LimpiezaThread(fechaProp, pou, pbLimpieza);
+                LimpiezaThread lmt = new LimpiezaThread(fechaProp, pou, pbLimpieza,lblPorcLimpieza);
                 lmt.start();
             }
         } catch (Exception e) {
@@ -162,6 +161,11 @@ public class App extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ImgPou.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cl/org/res/Pou.png"))); // NOI18N
+        ImgPou.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ImgPouMouseClicked(evt);
+            }
+        });
 
         btnAlimentar.setText("Alimentar");
         btnAlimentar.addActionListener(new java.awt.event.ActionListener() {
@@ -171,8 +175,18 @@ public class App extends javax.swing.JFrame {
         });
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         btnJugar.setText("Jugar");
+        btnJugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJugarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Salud:");
 
@@ -208,29 +222,17 @@ public class App extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
                         .addComponent(btnJugar)
                         .addGap(41, 41, 41))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(pbSalud, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblPorcSalud)
-                                .addGap(31, 31, 31))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pbLimpieza, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(pbEntretencion, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblPorcEntrete)
-                                    .addComponent(lblPorcLimpieza))
-                                .addGap(31, 31, 31))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(10, 10, 10)
+                                .addComponent(pbEntretencion, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblPorcEntrete))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(155, 155, 155)
                                 .addComponent(ImgPou))
@@ -238,16 +240,24 @@ public class App extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel5))
-                                .addGap(45, 45, 45)
+                                .addGap(35, 35, 35)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(pbEnergia, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(pbHambre, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(pbEnergia, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(18, 18, 18)
-                                        .addComponent(lblPorcEnergia))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblPorcHambre)
+                                            .addComponent(lblPorcEnergia)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(pbHambre, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(pbSalud, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(lblPorcHambre)))))
+                                        .addComponent(lblPorcSalud))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(pbLimpieza, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblPorcLimpieza)))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -292,9 +302,41 @@ public class App extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAlimentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlimentarActionPerformed
-        this.pou.setHambre(this.pou.getHambre() + 20);
-        this.pbHambre.setValue(this.pou.getHambre());
+        if (pbHambre.getValue() >= 100) {
+            playSoundNo();
+        } else {
+            pou.setHambre(pou.getHambre() + 10);
+            pbHambre.setValue(pou.getHambre());
+            lblPorcHambre.setText(pbHambre.getValue() + "%");
+            playSoundAlimentar();
+        }
     }//GEN-LAST:event_btnAlimentarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        if (pbLimpieza.getValue() >= 100) {
+            playSoundNo();
+        } else {
+            pou.setLimpieza(pou.getLimpieza() + 10);
+            pbLimpieza.setValue(pou.getLimpieza());
+            lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+            playSoundLimpiar();
+        }
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        if (pbEntretencion.getValue() >= 100) {
+            playSoundNo();
+        } else {
+            pou.setEntretencion(pou.getEntretencion() + 5);
+            pbEntretencion.setValue(pou.getEntretencion());
+            lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+            playSoundLimpiar();
+        }
+    }//GEN-LAST:event_btnJugarActionPerformed
+
+    private void ImgPouMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImgPouMouseClicked
+        playSoundHmmm();
+    }//GEN-LAST:event_ImgPouMouseClicked
 
     /**
      * @param args the command line arguments
@@ -352,4 +394,53 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JProgressBar pbLimpieza;
     private javax.swing.JProgressBar pbSalud;
     // End of variables declaration//GEN-END:variables
+
+    public void playSoundAlimentar() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\cl\\org\\res\\alimentar.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Hay un error con el sonido, contacte a janjell.");
+            ex.printStackTrace();
+        }
+    }
+
+    public void playSoundNo() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\cl\\org\\res\\no.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Hay un error con el sonido, contacte a janjell.");
+            ex.printStackTrace();
+        }
+    }
+
+    public void playSoundLimpiar() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\cl\\org\\res\\limpiar.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Hay un error con el sonido, contacte a janjell.");
+            ex.printStackTrace();
+        }
+    }
+
+    public void playSoundHmmm() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\cl\\org\\res\\hmmm.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Hay un error con el sonido, contacte a janjell.");
+            ex.printStackTrace();
+        }
+    }
+
 }
