@@ -39,8 +39,8 @@ public class EnergiaThread extends Thread {
                 localMS = System.currentTimeMillis();
                 propMS = timeProp.getTime();
 
-                // Cada 30 Minutos Baja la energía
-                if (localMS - propMS >= TimeUnit.HOURS.toMillis(2)) {
+                // Cada 30 Minutos Baja la energía y cada dos horas todo queda en 0
+                if (localMS - propMS >= TimeUnit.MINUTES.toMillis(120)) {
                     mascota.setEnergia(0);
                     pb.setValue(0);
                     lb.setText(pb.getValue() + "%");

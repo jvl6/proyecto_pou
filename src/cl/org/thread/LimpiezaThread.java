@@ -40,7 +40,7 @@ public class LimpiezaThread extends Thread {
                 propMS = timeProp.getTime();
 
                 // Cada 1 Hora Baja 1 de Limpieza (Lo que menos baja en el juego) *ES PROVISIONAL*
-                if (localMS - propMS >= TimeUnit.HOURS.toMillis(2)) {
+                if (localMS - propMS >= TimeUnit.MINUTES.toMillis(120)) {
                     mascota.setLimpieza(0);
                     pb.setValue(0);
                     lb.setText(pb.getValue() + "%");

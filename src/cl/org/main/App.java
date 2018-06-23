@@ -87,7 +87,12 @@ public class App extends javax.swing.JFrame {
                 int salud = Integer.parseInt(prop.getProperty("salud"));
                 int hambre = Integer.parseInt(prop.getProperty("hambre"));
                 int energia = Integer.parseInt(prop.getProperty("energia"));
-                String fecha = prop.getProperty("horaSalud");
+
+                String fechaEntre = prop.getProperty("horaEntretencion");
+                String fechaLimpi = prop.getProperty("horaLimpieza");
+                String fechaSalud = prop.getProperty("horaSalud");
+                String fechaHamb = prop.getProperty("horaHambre");
+                String fechaEnerg = prop.getProperty("horaEnergia");
 
                 this.pou = new Mascota(entretencion, limpieza, salud, hambre, energia);
 
@@ -103,15 +108,15 @@ public class App extends javax.swing.JFrame {
                 lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
                 lblPorcSalud.setText(pbSalud.getValue() + "%");
 
-                SaludThread st = new SaludThread(fecha, pou, pbSalud, lblPorcSalud);
+                SaludThread st = new SaludThread(fechaSalud, pou, pbSalud, lblPorcSalud);
                 st.start();
-                HambreThread at = new HambreThread(fecha, pou, pbHambre, lblPorcHambre);
+                HambreThread at = new HambreThread(fechaHamb, pou, pbHambre, lblPorcHambre);
                 at.start();
-                EntretencionThread ett = new EntretencionThread(fecha, pou, pbEntretencion, lblPorcEntrete);
+                EntretencionThread ett = new EntretencionThread(fechaEntre, pou, pbEntretencion, lblPorcEntrete);
                 ett.start();
-                EnergiaThread egt = new EnergiaThread(fecha, pou, pbEnergia, lblPorcEnergia);
+                EnergiaThread egt = new EnergiaThread(fechaEnerg, pou, pbEnergia, lblPorcEnergia);
                 egt.start();
-                LimpiezaThread lmt = new LimpiezaThread(fecha, pou, pbLimpieza, lblPorcLimpieza);
+                LimpiezaThread lmt = new LimpiezaThread(fechaLimpi, pou, pbLimpieza, lblPorcLimpieza);
                 lmt.start();
 
             } else {
@@ -149,17 +154,22 @@ public class App extends javax.swing.JFrame {
                 save = new File("mascota.properties");
                 input = new FileInputStream(save);
                 prop.load(input);
-                String fechaProp = prop.getProperty("horaSalud");
 
-                SaludThread st = new SaludThread(fechaProp, pou, pbSalud, lblPorcSalud);
+                String fechaEntre = prop.getProperty("horaEntretencion");
+                String fechaLimpi = prop.getProperty("horaLimpieza");
+                String fechaSalud = prop.getProperty("horaSalud");
+                String fechaHamb = prop.getProperty("horaHambre");
+                String fechaEnerg = prop.getProperty("horaEnergia");
+
+                SaludThread st = new SaludThread(fechaSalud, pou, pbSalud, lblPorcSalud);
                 st.start();
-                HambreThread at = new HambreThread(fechaProp, pou, pbHambre, lblPorcHambre);
+                HambreThread at = new HambreThread(fechaHamb, pou, pbHambre, lblPorcHambre);
                 at.start();
-                EntretencionThread ett = new EntretencionThread(fechaProp, pou, pbEntretencion, lblPorcEntrete);
+                EntretencionThread ett = new EntretencionThread(fechaEntre, pou, pbEntretencion, lblPorcEntrete);
                 ett.start();
-                EnergiaThread egt = new EnergiaThread(fechaProp, pou, pbEnergia, lblPorcEnergia);
+                EnergiaThread egt = new EnergiaThread(fechaEnerg, pou, pbEnergia, lblPorcEnergia);
                 egt.start();
-                LimpiezaThread lmt = new LimpiezaThread(fechaProp, pou, pbLimpieza, lblPorcLimpieza);
+                LimpiezaThread lmt = new LimpiezaThread(fechaLimpi, pou, pbLimpieza, lblPorcLimpieza);
                 lmt.start();
             }
         } catch (Exception e) {
@@ -501,7 +511,9 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnJugarActionPerformed
 
     private void ImgPouMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImgPouMouseClicked
-        playSoundHmmm();
+        if (evt.getClickCount() == 2) {
+            playSoundHmmm();
+        }
     }//GEN-LAST:event_ImgPouMouseClicked
 
     private void btnDormirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDormirActionPerformed
@@ -512,7 +524,7 @@ public class App extends javax.swing.JFrame {
             ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou_Sleeping.png");
             ImgPou.setIcon(myIcon);
 
-            pou.setEnergia(pou.getEnergia() + 5);
+            pou.setEnergia(pou.getEnergia() + 99);
             pbEnergia.setValue(pou.getEnergia());
             lblPorcEnergia.setText(pbEnergia.getValue() + "%");
 
