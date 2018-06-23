@@ -40,10 +40,15 @@ public class EnergiaThread extends Thread {
                 propMS = timeProp.getTime();
 
                 // Cada 30 Minutos Baja la energía
-                if (localMS - propMS >= TimeUnit.MINUTES.toMillis(30)) {
+                if (localMS - propMS >= TimeUnit.HOURS.toMillis(2)) {
+                    mascota.setEnergia(0);
+                    pb.setValue(0);
+                    lb.setText(pb.getValue() + "%");
+                } else if (localMS - propMS >= TimeUnit.MINUTES.toMillis(30)) {
                     mascota.setEnergia(mascota.getEnergia() - 1);
                     pb.setValue(pb.getValue() - 1);
                     lb.setText(pb.getValue() + "%");
+                    this.timeProp = new Date();
                 }
             }
         } catch (Exception e) {

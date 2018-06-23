@@ -50,10 +50,15 @@ public class HambreThread extends Thread {
 
                 System.out.println(dif);
 
-                if (this.localMS - this.propMS >= TimeUnit.MINUTES.toMillis(20)) {
+                if (this.localMS - this.propMS >= TimeUnit.HOURS.toMillis(2)) {
+                    this.mascota.setHambre(0);
+                    this.pb.setValue(0);
+                    lb.setText(pb.getValue() + "%");
+                } else if (this.localMS - this.propMS >= TimeUnit.MINUTES.toMillis(20)) {
                     this.mascota.setHambre(this.mascota.getHambre() - 1);
                     this.pb.setValue(this.pb.getValue() - 1);
                     lb.setText(pb.getValue() + "%");
+                    this.timeProp = new Date();
                 }
             }
         } catch (Exception e) {

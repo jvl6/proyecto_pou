@@ -40,7 +40,11 @@ public class EntretencionThread extends Thread {
                 propMS = timeProp.getTime();
 
                 // Cada 1 Hora Baja 1 de Entretencion
-                if (localMS - propMS >= TimeUnit.MINUTES.toMillis(60)) {
+                if (localMS - propMS >= TimeUnit.HOURS.toMillis(2)) {
+                    mascota.setEntretencion(0);
+                    pb.setValue(0);
+                    lb.setText(pb.getValue() + "%");
+                } else if (localMS - propMS >= TimeUnit.MINUTES.toMillis(60)) {
                     mascota.setEntretencion(mascota.getEntretencion() - 1);
                     pb.setValue(pb.getValue() - 1);
                     lb.setText(pb.getValue() + "%");

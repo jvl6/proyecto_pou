@@ -47,13 +47,18 @@ public class SaludThread extends Thread {
                 this.localMS = System.currentTimeMillis();
                 this.propMS = this.timeProp.getTime();
                 long dif = this.localMS - this.propMS;
-                
+
                 System.out.println(dif);
-                
-                if (this.localMS - this.propMS >= TimeUnit.MINUTES.toMillis(20)) {
+
+                if (this.localMS - this.propMS >= TimeUnit.HOURS.toMillis(2)) {
+                    this.mascota.setSalud(0);
+                    this.pb.setValue(0);
+                    lb.setText(pb.getValue() + "%");
+                } else if (this.localMS - this.propMS >= TimeUnit.MINUTES.toMillis(20)) {
                     this.mascota.setSalud(this.mascota.getSalud() - 1);
                     this.pb.setValue(this.pb.getValue() - 1);
                     lb.setText(pb.getValue() + "%");
+                    this.timeProp = new Date();
                 }
             }
         } catch (Exception e) {
