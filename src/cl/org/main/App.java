@@ -6,7 +6,6 @@ import cl.org.thread.EntretencionThread;
 import cl.org.thread.HambreThread;
 import cl.org.thread.LimpiezaThread;
 import cl.org.thread.SaludThread;
-import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,6 +17,7 @@ import java.util.Properties;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -141,7 +141,6 @@ public class App extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ImgPouSleeping = new javax.swing.JLabel();
         frameCheat = new javax.swing.JFrame();
         pnlCheat = new javax.swing.JPanel();
         txtCheatTextArea = new javax.swing.JTextField();
@@ -170,15 +169,9 @@ public class App extends javax.swing.JFrame {
         mebPrograma = new javax.swing.JMenuBar();
         menArchivo = new javax.swing.JMenu();
         meiCheatArea = new javax.swing.JMenuItem();
+        meiSalir = new javax.swing.JMenuItem();
         menAyuda = new javax.swing.JMenu();
         meiAcercaDe = new javax.swing.JMenuItem();
-
-        ImgPouSleeping.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cl/org/res/Pou_Sleeping.png"))); // NOI18N
-        ImgPouSleeping.setText("jLabel1");
-        ImgPouSleeping.setMaximumSize(new java.awt.Dimension(225, 200));
-        ImgPouSleeping.setMinimumSize(new java.awt.Dimension(225, 200));
-        ImgPouSleeping.setName(""); // NOI18N
-        ImgPouSleeping.setPreferredSize(new java.awt.Dimension(225, 200));
 
         frameCheat.setResizable(false);
 
@@ -305,6 +298,15 @@ public class App extends javax.swing.JFrame {
         });
         menArchivo.add(meiCheatArea);
 
+        meiSalir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        meiSalir.setText("Salir");
+        meiSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                meiSalirActionPerformed(evt);
+            }
+        });
+        menArchivo.add(meiSalir);
+
         mebPrograma.add(menArchivo);
 
         menAyuda.setText("Ayuda");
@@ -420,6 +422,10 @@ public class App extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAlimentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlimentarActionPerformed
+        getContentPane().setBackground(new java.awt.Color(255, 69, 0));
+        ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
+        ImgPou.setIcon(myIcon);
+
         if (pbHambre.getValue() >= 100) {
             playSoundNo();
         } else {
@@ -431,6 +437,10 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlimentarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        getContentPane().setBackground(new java.awt.Color(128, 0, 0));
+        ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
+        ImgPou.setIcon(myIcon);
+
         if (pbLimpieza.getValue() >= 100) {
             playSoundNo();
         } else {
@@ -442,6 +452,10 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        getContentPane().setBackground(new java.awt.Color(0, 100, 0));
+        ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
+        ImgPou.setIcon(myIcon);
+
         if (pbEntretencion.getValue() >= 100) {
             playSoundNo();
         } else {
@@ -460,9 +474,9 @@ public class App extends javax.swing.JFrame {
         if (pbEnergia.getValue() >= 100) {
             playSoundNo();
         } else {
-            getContentPane().setBackground(new java.awt.Color(139, 69, 19));
-            ImgPou.setVisible(false);
-            ImgPouSleeping.setVisible(true);
+            getContentPane().setBackground(new java.awt.Color(116, 76, 41));
+            ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou_Sleeping.png");
+            ImgPou.setIcon(myIcon);
 
             pou.setEnergia(pou.getEnergia() + 5);
             pbEnergia.setValue(pou.getEnergia());
@@ -474,6 +488,10 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDormirActionPerformed
 
     private void btnMedicinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMedicinaActionPerformed
+        getContentPane().setBackground(new java.awt.Color(25, 25, 112));
+        ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
+        ImgPou.setIcon(myIcon);
+
         if (pbSalud.getValue() >= 100) {
             playSoundNo();
         } else {
@@ -485,14 +503,78 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMedicinaActionPerformed
 
     private void btnAceptarCheatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarCheatActionPerformed
-        // Implementar cheat codes para el juego, como aumentar o disminuir stats no sé, ver más tarde.
+        if (txtCheatTextArea.getText().equals("sleepwithfishes")) {
+
+            getContentPane().setBackground(new java.awt.Color(211, 211, 211));
+            ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Death.png");
+            ImgPou.setIcon(myIcon);
+
+            playSoundGameOver();
+
+            this.pou = new Mascota(0, 0, 0, 0, 0);
+
+            pbEnergia.setValue(0);
+            pbEntretencion.setValue(0);
+            pbHambre.setValue(0);
+            pbLimpieza.setValue(0);
+            pbSalud.setValue(0);
+
+            lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+            lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+            lblPorcHambre.setText(pbHambre.getValue() + "%");
+            lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+            lblPorcSalud.setText(pbSalud.getValue() + "%");
+
+            btnAlimentar.setEnabled(false);
+            btnDormir.setEnabled(false);
+            btnJugar.setEnabled(false);
+            btnLimpiar.setEnabled(false);
+            btnMedicina.setEnabled(false);
+
+            txtCheatTextArea.setText("");
+            txtCheatTextArea.requestFocus();
+
+        }
+
+        if (txtCheatTextArea.getText().equals("pleasegivemeasecondchance")) {
+            getContentPane().setBackground(new java.awt.Color(245, 245, 245));
+            ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
+            ImgPou.setIcon(myIcon);
+
+            playSoundSuccess();
+
+            this.pou = new Mascota(80, 80, 50, 20, 80);
+
+            pbEnergia.setValue(80);
+            pbEntretencion.setValue(80);
+            pbHambre.setValue(20);
+            pbLimpieza.setValue(80);
+            pbSalud.setValue(50);
+
+            lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+            lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+            lblPorcHambre.setText(pbHambre.getValue() + "%");
+            lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+            lblPorcSalud.setText(pbSalud.getValue() + "%");
+
+            btnAlimentar.setEnabled(true);
+            btnDormir.setEnabled(true);
+            btnJugar.setEnabled(true);
+            btnLimpiar.setEnabled(true);
+            btnMedicina.setEnabled(true);
+
+            txtCheatTextArea.setText("");
+            txtCheatTextArea.requestFocus();
+
+        }
+
     }//GEN-LAST:event_btnAceptarCheatActionPerformed
 
     private void meiCheatAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meiCheatAreaActionPerformed
         frameCheat.setVisible(true);
         frameCheat.setBounds(0, 0, 420, 100);
         frameCheat.setLocationRelativeTo(null);
-        frameCheat.setTitle("----- Shame on you! :( ----- ");
+        frameCheat.setTitle("Cheat Code Central");
     }//GEN-LAST:event_meiCheatAreaActionPerformed
 
     private void meiAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meiAcercaDeActionPerformed
@@ -504,6 +586,10 @@ public class App extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, vntMensaje, titVentana, tipoa);
 
     }//GEN-LAST:event_meiAcercaDeActionPerformed
+
+    private void meiSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meiSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_meiSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -542,7 +628,6 @@ public class App extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ImgPou;
-    private javax.swing.JLabel ImgPouSleeping;
     private javax.swing.JButton btnAceptarCheat;
     private javax.swing.JButton btnAlimentar;
     private javax.swing.JButton btnDormir;
@@ -563,6 +648,7 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JMenuBar mebPrograma;
     private javax.swing.JMenuItem meiAcercaDe;
     private javax.swing.JMenuItem meiCheatArea;
+    private javax.swing.JMenuItem meiSalir;
     private javax.swing.JMenu menArchivo;
     private javax.swing.JMenu menAyuda;
     private javax.swing.JProgressBar pbEnergia;
@@ -625,6 +711,18 @@ public class App extends javax.swing.JFrame {
     public void playSoundSuccess() {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\cl\\org\\res\\success.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Hay un error con el sonido, contacte a janjell.");
+            ex.printStackTrace();
+        }
+    }
+
+    public void playSoundGameOver() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\cl\\org\\res\\game_over.wav").getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
