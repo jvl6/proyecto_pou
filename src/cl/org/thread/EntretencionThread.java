@@ -48,6 +48,7 @@ public class EntretencionThread extends Thread {
                     mascota.setEntretencion(mascota.getEntretencion() - 1);
                     pb.setValue(pb.getValue() - 1);
                     lb.setText(pb.getValue() + "%");
+                    this.timeProp = new Date();
                 }
             }
         } catch (Exception e) {

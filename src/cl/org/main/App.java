@@ -8,12 +8,16 @@ import cl.org.thread.LimpiezaThread;
 import cl.org.thread.SaludThread;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -32,8 +36,38 @@ public class App extends javax.swing.JFrame {
     public App() {
         initComponents();
         initPou();
+        shutdownHook();
         System.out.println(pou);
         setLocationRelativeTo(null);
+    }
+
+    private void shutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    OutputStream output = new FileOutputStream(new File("mascota.properties"));
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String fecha = sdf.format(new Date());
+                    prop.setProperty("entretencion", Integer.toString(pou.getEntretencion()));
+                    prop.setProperty("horaEntretencion", fecha);
+                    prop.setProperty("limpieza", Integer.toString(pou.getLimpieza()));
+                    prop.setProperty("horaLimpieza", fecha);
+                    prop.setProperty("salud", Integer.toString(pou.getSalud()));
+                    prop.setProperty("horaSalud", fecha);
+                    prop.setProperty("hambre", Integer.toString(pou.getHambre()));
+                    prop.setProperty("horaHambre", fecha);
+                    prop.setProperty("energia", Integer.toString(pou.getEnergia()));
+                    prop.setProperty("horaEnergia", fecha);
+                    prop.store(output, null);
+                    output.close();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     private void initPou() {
