@@ -4,6 +4,7 @@ import cl.org.model.Mascota;
 import cl.org.thread.EnergiaThread;
 import cl.org.thread.EntretencionThread;
 import cl.org.thread.HambreThread;
+import cl.org.thread.KillerThread;
 import cl.org.thread.LimpiezaThread;
 import cl.org.thread.SaludThread;
 import java.io.File;
@@ -118,6 +119,9 @@ public class App extends javax.swing.JFrame {
                 egt.start();
                 LimpiezaThread lmt = new LimpiezaThread(fechaLimpi, pou, pbLimpieza, lblPorcLimpieza);
                 lmt.start();
+                
+                KillerThread kil = new KillerThread(pou, btnAlimentar, btnDormir, btnJugar, btnLimpiar, btnMedicina, ImgPou, App.this);
+                kil.start();
 
             } else {
                 // Primer Run
@@ -171,6 +175,10 @@ public class App extends javax.swing.JFrame {
                 egt.start();
                 LimpiezaThread lmt = new LimpiezaThread(fechaLimpi, pou, pbLimpieza, lblPorcLimpieza);
                 lmt.start();
+
+                KillerThread kil = new KillerThread(pou, btnAlimentar, btnDormir, btnJugar, btnLimpiar, btnMedicina, ImgPou, App.this);
+                kil.start();
+
             }
         } catch (Exception e) {
         }
