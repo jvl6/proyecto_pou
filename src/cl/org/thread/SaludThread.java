@@ -50,7 +50,7 @@ public class SaludThread extends Thread {
 
                 System.out.println(dif);
 
-                if (this.localMS - this.propMS >= TimeUnit.MINUTES.toMillis(120)) {
+                if (this.localMS - this.propMS >= TimeUnit.HOURS.toMillis(10)) {
                     this.mascota.setSalud(0);
                     this.pb.setValue(0);
                     lb.setText(pb.getValue() + "%");
@@ -58,10 +58,10 @@ public class SaludThread extends Thread {
                     this.mascota.setSalud(this.mascota.getSalud() - 1);
                     this.pb.setValue(this.pb.getValue() - 1);
                     lb.setText(pb.getValue() + "%");
-                    this.timeProp = new Date();
+                    timeProp.setTime(propMS + TimeUnit.MINUTES.toMillis(20));
                 }
             }
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

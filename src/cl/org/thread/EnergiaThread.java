@@ -3,6 +3,7 @@ package cl.org.thread;
 import cl.org.model.Mascota;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;
@@ -40,7 +41,7 @@ public class EnergiaThread extends Thread {
                 propMS = timeProp.getTime();
 
                 // Cada 30 Minutos Baja la energía y cada dos horas todo queda en 0
-                if (localMS - propMS >= TimeUnit.MINUTES.toMillis(120)) {
+                if (localMS - propMS >= TimeUnit.HOURS.toMillis(10)) {
                     mascota.setEnergia(0);
                     pb.setValue(0);
                     lb.setText(pb.getValue() + "%");
@@ -48,10 +49,10 @@ public class EnergiaThread extends Thread {
                     mascota.setEnergia(mascota.getEnergia() - 1);
                     pb.setValue(pb.getValue() - 1);
                     lb.setText(pb.getValue() + "%");
-                    this.timeProp = new Date();
+                    timeProp.setTime(propMS + TimeUnit.MINUTES.toMillis(30));
                 }
             }
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
