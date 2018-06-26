@@ -298,6 +298,7 @@ public class App extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Proyecto Pou v1.5b");
+        setResizable(false);
 
         ImgPou.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cl/org/res/Pou.png"))); // NOI18N
         ImgPou.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -579,70 +580,148 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMedicinaActionPerformed
 
     private void btnAceptarCheatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarCheatActionPerformed
-        if (txtCheatTextArea.getText().equals("sleepwithfishes")) {
+        ImageIcon myIcon;
 
-            getContentPane().setBackground(new java.awt.Color(211, 211, 211));
-            ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Death.png");
-            ImgPou.setIcon(myIcon);
+        switch (txtCheatTextArea.getText()) {
+            case "sleepwithfishes":
+                playSoundGameOver();
 
-            playSoundGameOver();
+                this.pou.setEnergia(0);
+                this.pou.setEntretencion(0);
+                this.pou.setHambre(0);
+                this.pou.setLimpieza(0);
+                this.pou.setSalud(0);
 
-            this.pou = new Mascota(0, 0, 0, 0, 0);
+                pbEnergia.setValue(0);
+                pbEntretencion.setValue(0);
+                pbHambre.setValue(0);
+                pbLimpieza.setValue(0);
+                pbSalud.setValue(0);
 
-            pbEnergia.setValue(0);
-            pbEntretencion.setValue(0);
-            pbHambre.setValue(0);
-            pbLimpieza.setValue(0);
-            pbSalud.setValue(0);
+                lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+                lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+                lblPorcHambre.setText(pbHambre.getValue() + "%");
+                lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+                lblPorcSalud.setText(pbSalud.getValue() + "%");
 
-            lblPorcEnergia.setText(pbEnergia.getValue() + "%");
-            lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
-            lblPorcHambre.setText(pbHambre.getValue() + "%");
-            lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
-            lblPorcSalud.setText(pbSalud.getValue() + "%");
+                btnAlimentar.setEnabled(false);
+                btnDormir.setEnabled(false);
+                btnJugar.setEnabled(false);
+                btnLimpiar.setEnabled(false);
+                btnMedicina.setEnabled(false);
 
-            btnAlimentar.setEnabled(false);
-            btnDormir.setEnabled(false);
-            btnJugar.setEnabled(false);
-            btnLimpiar.setEnabled(false);
-            btnMedicina.setEnabled(false);
+                txtCheatTextArea.setText("");
+                txtCheatTextArea.requestFocus();
+                break;
+            case "pleasegivemeasecondchance":
+                getContentPane().setBackground(new java.awt.Color(245, 245, 245));
+                myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
+                ImgPou.setIcon(null);
+                ImgPou.setIcon(myIcon);
 
-            txtCheatTextArea.setText("");
-            txtCheatTextArea.requestFocus();
+                playSoundSuccess();
 
+                this.pou.setEnergia(80);
+                this.pou.setEntretencion(80);
+                this.pou.setHambre(20);
+                this.pou.setLimpieza(80);
+                this.pou.setSalud(50);
+
+                pbEnergia.setValue(80);
+                pbEntretencion.setValue(80);
+                pbHambre.setValue(20);
+                pbLimpieza.setValue(80);
+                pbSalud.setValue(50);
+
+                lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+                lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+                lblPorcHambre.setText(pbHambre.getValue() + "%");
+                lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+                lblPorcSalud.setText(pbSalud.getValue() + "%");
+
+                btnAlimentar.setEnabled(true);
+                btnDormir.setEnabled(true);
+                btnJugar.setEnabled(true);
+                btnLimpiar.setEnabled(true);
+                btnMedicina.setEnabled(true);
+
+                txtCheatTextArea.setText("");
+                txtCheatTextArea.requestFocus();
+                break;
+            case "herfito":
+                myIcon = new ImageIcon("src\\cl\\org\\res\\herfito.png");
+                ImgPou.setIcon(null);
+                ImgPou.setIcon(myIcon);
+
+                playSoundSuccess();
+            default:
+                break;
         }
 
-        if (txtCheatTextArea.getText().equals("pleasegivemeasecondchance")) {
-            getContentPane().setBackground(new java.awt.Color(245, 245, 245));
-            ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
-            ImgPou.setIcon(myIcon);
-
-            playSoundSuccess();
-
-            this.pou = new Mascota(80, 80, 50, 20, 80);
-
-            pbEnergia.setValue(80);
-            pbEntretencion.setValue(80);
-            pbHambre.setValue(20);
-            pbLimpieza.setValue(80);
-            pbSalud.setValue(50);
-
-            lblPorcEnergia.setText(pbEnergia.getValue() + "%");
-            lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
-            lblPorcHambre.setText(pbHambre.getValue() + "%");
-            lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
-            lblPorcSalud.setText(pbSalud.getValue() + "%");
-
-            btnAlimentar.setEnabled(true);
-            btnDormir.setEnabled(true);
-            btnJugar.setEnabled(true);
-            btnLimpiar.setEnabled(true);
-            btnMedicina.setEnabled(true);
-
-            txtCheatTextArea.setText("");
-            txtCheatTextArea.requestFocus();
-
-        }
+//        if (txtCheatTextArea.getText().equals("sleepwithfishes")) {
+//
+//            getContentPane().setBackground(new java.awt.Color(211, 211, 211));
+//            ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Death.png");
+//            ImgPou.setIcon(myIcon);
+//
+//            playSoundGameOver();
+//
+//            this.pou = new Mascota(0, 0, 0, 0, 0);
+//
+//            pbEnergia.setValue(0);
+//            pbEntretencion.setValue(0);
+//            pbHambre.setValue(0);
+//            pbLimpieza.setValue(0);
+//            pbSalud.setValue(0);
+//
+//            lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+//            lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+//            lblPorcHambre.setText(pbHambre.getValue() + "%");
+//            lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+//            lblPorcSalud.setText(pbSalud.getValue() + "%");
+//
+//            btnAlimentar.setEnabled(false);
+//            btnDormir.setEnabled(false);
+//            btnJugar.setEnabled(false);
+//            btnLimpiar.setEnabled(false);
+//            btnMedicina.setEnabled(false);
+//
+//            txtCheatTextArea.setText("");
+//            txtCheatTextArea.requestFocus();
+//
+//        }
+//
+//        if (txtCheatTextArea.getText().equals("pleasegivemeasecondchance")) {
+//            getContentPane().setBackground(new java.awt.Color(245, 245, 245));
+//            ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou.png");
+//            ImgPou.setIcon(myIcon);
+//
+//            playSoundSuccess();
+//
+//            this.pou = new Mascota(80, 80, 50, 20, 80);
+//
+//            pbEnergia.setValue(80);
+//            pbEntretencion.setValue(80);
+//            pbHambre.setValue(20);
+//            pbLimpieza.setValue(80);
+//            pbSalud.setValue(50);
+//
+//            lblPorcEnergia.setText(pbEnergia.getValue() + "%");
+//            lblPorcEntrete.setText(pbEntretencion.getValue() + "%");
+//            lblPorcHambre.setText(pbHambre.getValue() + "%");
+//            lblPorcLimpieza.setText(pbLimpieza.getValue() + "%");
+//            lblPorcSalud.setText(pbSalud.getValue() + "%");
+//
+//            btnAlimentar.setEnabled(true);
+//            btnDormir.setEnabled(true);
+//            btnJugar.setEnabled(true);
+//            btnLimpiar.setEnabled(true);
+//            btnMedicina.setEnabled(true);
+//
+//            txtCheatTextArea.setText("");
+//            txtCheatTextArea.requestFocus();
+//
+//        }
 
     }//GEN-LAST:event_btnAceptarCheatActionPerformed
 
