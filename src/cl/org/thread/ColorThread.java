@@ -45,6 +45,8 @@ public class ColorThread extends Thread {
     @Override
     public void run() {
         pb.addChangeListener(new ColorListener());
+        pb.setValue(pb.getValue() - 1);
+        pb.setValue(pb.getValue() + 1);
     }
 
 }

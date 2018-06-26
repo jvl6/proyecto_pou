@@ -201,7 +201,6 @@ public class App extends javax.swing.JFrame {
                 lmtListener.start();
                 ColorThread stListener = new ColorThread(pbSalud);
                 stListener.start();
-
             }
         } catch (Exception e) {
         }
