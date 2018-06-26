@@ -3,7 +3,6 @@ package cl.org.thread;
 import cl.org.model.Mascota;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;

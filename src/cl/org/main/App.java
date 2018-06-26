@@ -7,6 +7,7 @@ import cl.org.thread.HambreThread;
 import cl.org.thread.KillerThread;
 import cl.org.thread.LimpiezaThread;
 import cl.org.thread.SaludThread;
+import cl.org.thread.ColorThread;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -119,9 +120,20 @@ public class App extends javax.swing.JFrame {
                 egt.start();
                 LimpiezaThread lmt = new LimpiezaThread(fechaLimpi, pou, pbLimpieza, lblPorcLimpieza);
                 lmt.start();
-                
+
                 KillerThread kil = new KillerThread(pou, btnAlimentar, btnDormir, btnJugar, btnLimpiar, btnMedicina, ImgPou, App.this);
                 kil.start();
+
+                ColorThread egtListener = new ColorThread(pbEnergia);
+                egtListener.start();
+                ColorThread ettListener = new ColorThread(pbEntretencion);
+                ettListener.start();
+                ColorThread atListener = new ColorThread(pbHambre);
+                atListener.start();
+                ColorThread lmtListener = new ColorThread(pbLimpieza);
+                lmtListener.start();
+                ColorThread stListener = new ColorThread(pbSalud);
+                stListener.start();
 
             } else {
                 // Primer Run
@@ -178,6 +190,17 @@ public class App extends javax.swing.JFrame {
 
                 KillerThread kil = new KillerThread(pou, btnAlimentar, btnDormir, btnJugar, btnLimpiar, btnMedicina, ImgPou, App.this);
                 kil.start();
+
+                ColorThread egtListener = new ColorThread(pbEnergia);
+                egtListener.start();
+                ColorThread ettListener = new ColorThread(pbEntretencion);
+                ettListener.start();
+                ColorThread atListener = new ColorThread(pbHambre);
+                atListener.start();
+                ColorThread lmtListener = new ColorThread(pbLimpieza);
+                lmtListener.start();
+                ColorThread stListener = new ColorThread(pbSalud);
+                stListener.start();
 
             }
         } catch (Exception e) {
@@ -656,7 +679,7 @@ public class App extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Swing".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
