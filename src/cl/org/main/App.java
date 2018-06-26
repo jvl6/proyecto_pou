@@ -554,7 +554,7 @@ public class App extends javax.swing.JFrame {
             ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Pou_Sleeping.png");
             ImgPou.setIcon(myIcon);
 
-            pou.setEnergia(pou.getEnergia() + 99);
+            pou.setEnergia(100);
             pbEnergia.setValue(pou.getEnergia());
             lblPorcEnergia.setText(pbEnergia.getValue() + "%");
 
