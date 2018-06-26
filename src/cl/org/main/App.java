@@ -796,7 +796,7 @@ public class App extends javax.swing.JFrame {
         }
     }
 
-    public void playSoundGameOver() {
+    public static void playSoundGameOver() {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\cl\\org\\res\\game_over.wav").getAbsoluteFile());
             Clip clip = AudioSystem.getClip();

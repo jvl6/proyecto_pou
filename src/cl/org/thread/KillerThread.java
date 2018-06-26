@@ -35,13 +35,14 @@ public class KillerThread extends Thread {
     @Override
     public void run() {
         try {
+            boolean dead = true;
             while (true) {
                 Thread.sleep(5);
 
                 if (mas.getEnergia() == 0 && mas.getEntretencion() == 0 && mas.getHambre() == 0 && mas.getLimpieza() == 0 && mas.getSalud() == 0) {
-                    
+
                     app.getContentPane().setBackground(new java.awt.Color(211, 211, 211));
-                    
+
                     ImageIcon myIcon = new ImageIcon("src\\cl\\org\\res\\Death.png");
                     lbl.setIcon(myIcon);
                     btnA.setEnabled(false);
@@ -49,6 +50,11 @@ public class KillerThread extends Thread {
                     btnC.setEnabled(false);
                     btnD.setEnabled(false);
                     btnE.setEnabled(false);
+
+                    if (dead) {
+                        App.playSoundGameOver();
+                        dead = false;
+                    }
                 }
 
             }
